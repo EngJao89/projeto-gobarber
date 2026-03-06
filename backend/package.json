@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@sentry/node": "^5.19.2",
+    "@sentry/node": "^10.42.0",
     "bcryptjs": "^2.4.3",
     "bee-queue": "^1.2.3",
     "cors": "^2.8.5",
@@ -30,8 +30,8 @@
     "pg": "^8.3.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.3",
-    "socket.io": "^2.3.0",
-    "youch": "^2.0.10",
+    "socket.io": "^4.8.3",
+    "youch": "^4.1.0",
     "yup": "^0.29.1"
   },
   "devDependencies": {
