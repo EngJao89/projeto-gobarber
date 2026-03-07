@@ -1,70 +1,112 @@
-# Getting Started with Create React App
+# GoBarber — Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Frontend da aplicação **GoBarber**: plataforma de agendamento para barbearias. Permite que usuários façam login, criem conta, acessem o dashboard e gerenciem o perfil. O frontend consome a API do backend (REST e WebSocket) para autenticação, dados do usuário e funcionalidades em tempo real.
 
-## Available Scripts
+Este projeto foi iniciado com [Create React App](https://github.com/facebook/create-react-app) e customizado com **react-app-rewired** e **customize-cra**.
 
-In the project directory, you can run:
+---
 
-### `yarn start`
+## Como rodar o projeto
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Pré-requisitos
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- **Node.js** (versão LTS recomendada)
+- **npm** ou **yarn**
+- Backend do GoBarber rodando (por padrão em `http://localhost:3333`)
 
-### `yarn test`
+### Instalação
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone o repositório e entre na pasta do frontend:
 
-### `yarn build`
+   ```bash
+   cd frontendgo
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. Instale as dependências:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   ```bash
+   npm install
+   # ou
+   yarn
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. (Opcional) Ajuste a URL da API em `src/services/api.js` se o backend estiver em outro host/porta.
 
-### `yarn eject`
+### Scripts disponíveis
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+| Comando           | Descrição |
+|------------------|-----------|
+| `npm start`      | Sobe a aplicação em modo desenvolvimento em [http://localhost:3000](http://localhost:3000). Hot reload e erros de lint no console. |
+| `npm run build`  | Gera o build de produção na pasta `build` (minificado e otimizado). |
+| `npm test`       | Executa os testes em modo interativo. |
+| `npm run commit` | Abre o Commitizen para criar commits no padrão Conventional Commits. |
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+No lugar de `npm` você pode usar `yarn` (ex.: `yarn start`, `yarn build`).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Rodando a aplicação
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. Certifique-se de que o **backend** está rodando (ex.: `http://localhost:3333`).
+2. No diretório do frontend, execute:
 
-## Learn More
+   ```bash
+   npm start
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3. Acesse [http://localhost:3000](http://localhost:3000) no navegador.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## Decisões técnicas e arquiteturais
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Stack principal
 
-### Analyzing the Bundle Size
+- **React 16** com Hooks
+- **Redux** para estado global
+- **Redux Saga** para efeitos assíncronos (login, registro, perfil, etc.)
+- **Redux Persist** para persistir parte do estado (ex.: autenticação) no `localStorage`
+- **React Router (v5)** com histórico customizado (`history`) para controle de rotas e redirecionamentos
+- **Axios** para chamadas HTTP à API
+- **Socket.io-client** para comunicação em tempo real com o backend
+- **Styled Components** para estilização por componente
+- **Unform** (Rocketseat) + **Yup** para formulários e validação
+- **React Toastify** para notificações
+- **Reactotron** em desenvolvimento para debug de Redux e Redux Saga
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Estrutura de pastas (src)
 
-### Making a Progressive Web App
+- **`store/`** — Configuração do Redux (store, middlewares, persist), `rootReducer`, `rootSaga` e módulos por domínio (`auth`, `user`), cada um com `reducer`, `sagas` e `actions`.
+- **`pages/`** — Páginas da aplicação: `SignIn`, `SignUp`, `Dashboard`, `Profile`, e layouts `_layouts/auth` e `_layouts/default`.
+- **`components/`** — Componentes reutilizáveis (ex.: Header, Notifications).
+- **`routes/`** — Definição de rotas e componente `Route` que aplica layouts e proteção de rotas (públicas vs privadas).
+- **`services/`** — Instância do Axios (`api.js`) e histórico do React Router (`history.js`).
+- **`styles/`** — Estilos globais (ex.: `global.js`).
+- **`config/`** — Configuração do Reactotron.
+- **`assets/`** — Imagens e ícones (ex.: logos).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Rotas e autenticação
 
-### Advanced Configuration
+- Rotas **públicas**: `/` (SignIn) e `/register` (SignUp), com layout de autenticação.
+- Rotas **privadas**: `/dashboard` e `/profile`, com layout padrão (header, etc.).
+- O componente `Route` em `routes/Route.js` verifica `auth.signed` no Redux: se o usuário não está logado e acessa rota privada, redireciona para `/`; se está logado e acessa rota pública, redireciona para `/dashboard`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Customização do Create React App
 
-### Deployment
+- **react-app-rewired** + **customize-cra** permitem alterar a configuração do CRA sem eject.
+- **config-overrides.js** adiciona o **babel-plugin-root-import** com `rootPathSuffix: 'src'`, permitindo imports com alias `~` (ex.: `~/store`, `~/pages/...`), o que evita caminhos relativos longos e facilita refatoração.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Ferramentas de desenvolvimento
 
-### `yarn build` fails to minify
+- **ESLint** com extensões (react-app, Airbnb, Prettier, import resolver para root-import).
+- **Prettier** para formatação.
+- **Commitizen** + **cz-conventional-changelog** para commits no padrão Conventional Changelog (`npm run commit`).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### API e ambiente
+
+- A base URL da API está definida em `src/services/api.js` (padrão: `http://localhost:3333`). Alterar esse valor conforme o ambiente (dev/staging/produção) ou evoluir para variáveis de ambiente se necessário.
+
+---
+
+## Referências
+
+- [Create React App — documentação](https://facebook.github.io/create-react-app/docs/getting-started)
+- [React — documentação](https://reactjs.org/)
