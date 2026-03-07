@@ -66,7 +66,15 @@ npm run dev
 
 A API sobe em **http://localhost:3333**.
 
-### 5. Processar filas (e-mails, jobs)
+### 5. Documentação da API (Swagger)
+
+Com a API rodando, a documentação interativa está disponível em:
+
+**http://localhost:3333/api-docs**
+
+Lá você pode ver todos os endpoints, schemas de request/response e testar as rotas. Para rotas protegidas, faça login em `POST /sessions`, copie o `token` e use **Authorize** (cadeado) informando `Bearer <seu_token>`.
+
+### 6. Processar filas (e-mails, jobs)
 
 Em outro terminal, rode o worker das filas (ex.: envio de e-mail de cancelamento):
 
@@ -76,7 +84,7 @@ npm run queue
 
 Mantenha `npm run dev` e `npm run queue` rodando para uso completo (API + jobs).
 
-### 6. Produção (build)
+### 7. Produção (build)
 
 ```bash
 npm run build
@@ -96,6 +104,13 @@ O worker de filas continua sendo iniciado com `node src/queue.js` (ou equivalent
 | `npm run build` | Compila com Sucrase para `./dist`  |
 | `npm start`  | Roda a API a partir de `./dist`    |
 | `npm run commit` | Abre o Commitizen para commits padronizados |
+
+**URLs úteis (com a API rodando):**
+
+| URL | Descrição |
+| ----- | --------- |
+| http://localhost:3333 | Health check (`GET /` retorna `ok`) |
+| http://localhost:3333/api-docs | Documentação Swagger (OpenAPI) |
 
 ---
 
@@ -130,6 +145,7 @@ Fluxos assíncronos (ex.: envio de e-mail ao cancelar agendamento) são feitos c
 - **Yup**: validação de dados nas requisições (nos controllers).
 - **Youch**: formato de erro detalhado em desenvolvimento.
 - **Sentry**: envio de erros para monitoramento (quando `SENTRY_DSN` está configurado).
+- **Swagger (OpenAPI 3)**: documentação da API em `src/config/swagger.js`; UI servida em `/api-docs` via `swagger-ui-express`.
 
 ### Uso de dois bancos (PostgreSQL + MongoDB)
 
@@ -145,7 +161,7 @@ Fluxos assíncronos (ex.: envio de e-mail ao cancelar agendamento) são feitos c
 ### Estrutura de pastas
 
 - **`src/app/`**: controllers, models, middlewares, jobs, schemas (Mongo), views de e-mail.
-- **`src/config/`**: configurações (auth, database, mail, multer, redis, sentry).
+- **`src/config/`**: configurações (auth, database, mail, multer, redis, sentry, swagger).
 - **`src/database/`**: inicialização Sequelize/Mongoose e migrations.
 - **`src/lib/`**: utilitários (Queue, Mail).
 - **`src/`**: `app.js` (configuração Express + Socket.io + Sentry + rotas), `routes.js`, `server.js`, `queue.js`.
