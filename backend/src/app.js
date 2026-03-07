@@ -9,8 +9,11 @@ import 'express-async-errors';
 import io from 'socket.io';
 import http from 'http';
 
+import swaggerUi from 'swagger-ui-express';
+
 import routes from './routes';
 import sentryConfig from './config/sentry';
+import swaggerConfig from './config/swagger';
 
 import './database';
 
@@ -62,6 +65,7 @@ class App {
   }
 
   routes() {
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerConfig));
     this.app.use(routes);
     this.app.use(Sentry.Handlers.errorHandler());
   }
