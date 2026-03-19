@@ -21,12 +21,12 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
-    "express-handlebars": "^5.1.0",
-    "jsonwebtoken": "^8.5.1",
+    "express-handlebars": "^8.0.6",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^6.13.6",
     "multer": "^2.1.1",
-    "nodemailer": "^6.4.10",
-    "nodemailer-express-handlebars": "^4.0.0",
+    "nodemailer": "^8.0.3",
+    "nodemailer-express-handlebars": "^7.0.0",
     "pg": "^8.3.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.3",
@@ -37,7 +37,7 @@
     "yup": "^0.29.1"
   },
   "devDependencies": {
-    "commitizen": "^4.3.1",
+    "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.4.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -48,6 +48,17 @@
     "prettier": "^1.17.1",
     "sequelize-cli": "^6.2.0",
     "sucrase": "^3.15.0"
+  },
+  "overrides": {
+    "commitizen": {
+      "lodash": "4.17.23"
+    },
+    "simple-update-notifier": {
+      "semver": "7.7.4"
+    },
+    "external-editor": {
+      "tmp": "0.2.5"
+    }
   },
   "description": "",
   "config": {
